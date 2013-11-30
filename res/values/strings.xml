@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="application_name">DroidPocketMine</string>
+    <string name="activity_name">DroidPocketMine</string>
+    <string name="server_handler">Server Management</string>
+    <string name="server_online">Start Server</string>
+    <string name="server_kill">Stop Server</string>
+    <string name="install_bin">Installing DroidPocketMine...</string>
+    <string name="bin_installed">DroidPocketMine was successfully installed</string>
+    <string name="bin_hint">Binaries not found Please click on More >> Install Binaries to Install Lighttpd, PHP, mySQL</string>
+    <string name="bin_error">Unable to install DroidPocketMine</string>
+    <!-- Action bar menus -->
+    <string name="abs_settings">Settings</string>
+    
+    <string name="abs_file_manager">File Manager</string>
+    <string name="abs_about">About</string>
+    <!-- Server Service -->
+    <string name="sevc_service">DroidPocketMine Services</string>
+    <string name="sevc_server_started">DroidPocketMine is now running</string>
+    <!--  -->
+    <string name="title_activity_log">Console</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="btn_console_send">Enter</string>
+    <string name="title_activity_file_manager">File Manager</string>
+    <string name="abs_force_close">Kill server</string>
+    <string name="title_activity_version_manager">Version manager</string>
+    <string name="abs_version_manager">Version manager</string>
+    <string name="thank_you">Thank you for downloading DroidPocketMine!</string>
+    <string name="before_anything">Now we will prepare everything for you.</string>
+    <string name="preparing_string">Preparing...</string>
+    <string name="title_activity_install">Welcome!</string>
+    <string name="versionToInstall">Choose a version to install:</string>
+    <string name="skip_version_sel">Skip this step</string>
+
+</resources>

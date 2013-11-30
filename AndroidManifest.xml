@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.MrARM.DroidPocketMine"
+    android:versionCode="1"
+    android:versionName="1.0.0" >
+
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="17" />
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" // -->
+
+    <application
+        android:configChanges="keyboardHidden|orientation"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/application_name" >
+        <activity
+            android:name="com.MrARM.DroidPocketMine.HomeActivity"
+            android:label="@string/activity_name"
+            android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.MrARM.DroidPocketMine.About"
+            android:label="About DroidPocketMine"
+            android:theme="@style/Theme.Sherlock.Light.DarkActionBar"
+            android:configChanges="keyboardHidden|orientation" >
+        </activity>
+        
+        <activity
+            android:name="com.MrARM.DroidPocketMine.InstallActivity"
+            android:label="@string/title_activity_install"
+            android:theme="@style/Theme.Sherlock.Light.DarkActionBar"
+            android:configChanges="keyboardHidden|orientation" >
+        </activity>
+        
+        <activity
+            android:name="com.MrARM.DroidPocketMine.FileManagerActivity"
+            android:label="@string/title_activity_file_manager"
+            android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
+        </activity>
+        
+        <activity
+            android:name="com.MrARM.DroidPocketMine.VersionManagerActivity"
+            android:label="@string/title_activity_version_manager"
+            android:theme="@style/Theme.Sherlock.Light.DarkActionBar"
+            android:configChanges="keyboardHidden|orientation" >
+        </activity>
+
+        <service
+            android:name="com.MrARM.DroidPocketMine.ServerService"
+            android:icon="@drawable/ic_launcher"
+            android:label="Server is running" >
+        </service>
+
+        <activity
+            android:name="com.MrARM.DroidPocketMine.LogActivity"
+            android:label="@string/title_activity_log"
+            android:theme="@style/Theme.Sherlock.Light.DarkActionBar"
+            android:configChanges="keyboardHidden|orientation" >
+        </activity>
+    </application>
+
+</manifest>
