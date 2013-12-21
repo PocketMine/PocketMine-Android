@@ -1,6 +1,7 @@
 package com.MrARM.DroidPocketMine;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,11 +47,16 @@ public class VersionManagerActivity extends SherlockActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(install?R.layout.install_versions_activity:R.layout.version_manager);
+		
+		start();
+	}
+	
+	public void start(){
 
 		install = getIntent().getBooleanExtra("install", false);
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-		super.onCreate(savedInstanceState);
-		setContentView(install?R.layout.install_versions_activity:R.layout.version_manager);
 		
 		if(install && new File(ServerUtils.getDataDirectory()+"/PocketMine-MP.php").isFile()){
 			final Button skipBtn = (Button)findViewById(R.id.skipInstallVer);
@@ -100,8 +106,14 @@ public class VersionManagerActivity extends SherlockActivity {
 				    }
 				    in.close();
 				} catch (Exception e) {
-					showToast("Error occured while loading versions from server.");
+					showToast("Error occured while loading versions from server; waiting 5 seconds and trying again.");
 					progress.dismiss();
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					start();
 					return;
 				}
 				progress.dismiss();
@@ -271,7 +283,7 @@ public class VersionManagerActivity extends SherlockActivity {
 									f = new java.io.File(f.getParent());
 									if(!f.isDirectory()) f.mkdirs();
 									
-			                        FileOutputStream fout = new FileOutputStream(loc + zeName);           
+			                        BufferedOutputStream fout = new BufferedOutputStream(new FileOutputStream(loc + zeName));           
 			                        for (int c = zin.read(); c != -1; c = zin.read()) {
 			                            fout.write(c);
 			                        }

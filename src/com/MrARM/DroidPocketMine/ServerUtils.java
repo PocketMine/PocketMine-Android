@@ -311,7 +311,7 @@ public final class ServerUtils {
 		//File mLighttpd = new File(getAppDirectory() + "/lighttpd");
 		//File mMySqlMon = new File(getAppDirectory() + "/mysql-monitor");
 
-		if (mPhp.exists() && mPM.exists() && saveVer == 1) {
+		if (mPhp.exists() && mPM.exists() && saveVer == 2) {
 
 			return true;
 
