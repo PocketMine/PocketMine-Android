@@ -173,57 +173,7 @@ public class VersionManagerActivity extends SherlockActivity {
 				final CharSequence fver = ver;
 				
 				if(needsDownload){
-					final ProgressDialog dlDialog = new ProgressDialog(ctx);
-					dlDialog.setMax(100);
-					dlDialog.setTitle("Downloading this version...");
-					dlDialog.setMessage("Please wait...");
-					dlDialog.setIndeterminate(false);
-					dlDialog.setCancelable(false);
-					dlDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-					dlDialog.show();
-					dlDialog.setProgress(0);
-					new Thread(new Runnable() {
-						
-						@Override
-						public void run() {
-							try {
-								URL url = new URL("https://github.com/PocketMine/PocketMine-MP/archive/"+fver+".zip");
-								URLConnection connection = url.openConnection();
-								connection.connect();
-								int fileLength = connection.getContentLength();
-
-								InputStream input = new BufferedInputStream(url.openStream());
-								OutputStream output = new FileOutputStream(ServerUtils.getDataDirectory()+"/versions/"+fver+".zip");
-
-								byte data[] = new byte[1024];
-								long total = 0;
-								int count;
-								int lastProgress = 0;
-								while ((count = input.read(data)) != -1) {
-									total += count;
-									int progress = (int) (total * 100 / fileLength);
-									if(progress != lastProgress) { dlDialog.setProgress(progress); lastProgress = progress; }
-									output.write(data, 0, count);
-								}
-
-								output.flush();
-								output.close();
-								input.close();
-							} catch (Exception e) {
-								showToast("Failed to download this version.");
-								dlDialog.dismiss();
-								return;
-							}
-							
-							dlDialog.dismiss();
-							
-							install(fver);
-							//dlDialog.setTitle("Installing this version...");
-							//dlDialog.show();
-						}
-
-						
-					}).start();
+					download("https://github.com/PocketMine/PocketMine-MP/archive/"+fver+".zip", fver.toString());
 				}else{
 					new Thread(new Runnable() {
 						
@@ -233,6 +183,105 @@ public class VersionManagerActivity extends SherlockActivity {
 						}
 					}).start();
 				}
+			}
+		});
+		
+		final Button dlDevBtn = (Button)findViewById(R.id.dlDevBtn);
+		dlDevBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				final ProgressDialog progress = ProgressDialog.show(ctx, "Loading versions from server...",
+					    "Please wait...", true);
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						StringBuilder sb = new StringBuilder();
+						try 
+						{
+						    URL url = new URL("https://api.github.com/repos/PocketMine/PocketMine-MP/commits");
+						    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+						    String str;
+						    
+						    while ((str = in.readLine()) != null) 
+						    {
+						    	sb.append(str);
+						    }
+						    in.close();
+						} catch (Exception e) {
+							showToast("Error occured while finding download link.");
+							progress.dismiss();
+						}
+						progress.dismiss();
+						
+						final JSONArray array = (JSONArray)JSONValue.parse(sb.toString());
+						JSONObject obj = (JSONObject) array.get(0);
+						String sha = (String) obj.get("sha");
+						//spin.setAdapter(adapter);
+						download("https://github.com/PocketMine/PocketMine-MP/archive/"+sha+".zip", sha);
+					}
+				}).start();
+			}
+		});
+	}
+	
+	private void download(final String address, final String fver) {
+		final VersionManagerActivity ctx = this;
+		HomeActivity.ha.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				final ProgressDialog dlDialog = new ProgressDialog(ctx);
+				dlDialog.setMax(100);
+				dlDialog.setTitle("Downloading this version...");
+				dlDialog.setMessage("Please wait...");
+				dlDialog.setIndeterminate(false);
+				dlDialog.setCancelable(false);
+				dlDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+				dlDialog.show();
+				dlDialog.setProgress(0);
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						try {
+							URL url = new URL(address);
+							URLConnection connection = url.openConnection();
+							connection.connect();
+							int fileLength = connection.getContentLength();
+		
+							InputStream input = new BufferedInputStream(url.openStream());
+							OutputStream output = new FileOutputStream(ServerUtils.getDataDirectory()+"/versions/"+fver+".zip");
+		
+							byte data[] = new byte[1024];
+							long total = 0;
+							int count;
+							int lastProgress = 0;
+							while ((count = input.read(data)) != -1) {
+								total += count;
+								int progress = (int) (total * 100 / fileLength);
+								if(progress != lastProgress) { dlDialog.setProgress(progress); lastProgress = progress; }
+								output.write(data, 0, count);
+							}
+		
+							output.flush();
+							output.close();
+							input.close();
+						} catch (Exception e) {
+							showToast("Failed to download this version.");
+							dlDialog.dismiss();
+							return;
+						}
+						
+						dlDialog.dismiss();
+						
+						install(fver);
+						//dlDialog.setTitle("Installing this version...");
+						//dlDialog.show();
+					}
+		
+					
+				}).start();
 			}
 		});
 	}

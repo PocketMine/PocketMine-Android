@@ -44,4 +44,14 @@
         android:text="@string/skip_version_sel"
         android:visibility="gone" />
 
+    <Button
+        android:id="@+id/dlDevBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/version_select"
+        android:layout_marginTop="15dp"
+        android:text="@string/install_dev" />
+
 </RelativeLayout>

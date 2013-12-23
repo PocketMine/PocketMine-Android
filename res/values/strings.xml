@@ -32,5 +32,6 @@
     <string name="title_activity_install">Welcome!</string>
     <string name="versionToInstall">Choose a version to install:</string>
     <string name="skip_version_sel">Skip this step</string>
+    <string name="install_dev">Download development version</string>
 
 </resources>
