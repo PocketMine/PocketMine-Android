@@ -127,7 +127,8 @@ public class VersionManagerActivity extends SherlockActivity {
 							String verName = (String)jobj.get("name");
 							Boolean isDown = false;
 							
-							for(String str : downloadedVers){
+							for(int i=downloadedVers.size()-1;i>=0;i--){
+								String str = downloadedVers.get(i);
 								if(str.equals(verName)){
 									isDown = true;
 									downloadedVers.remove(str);
@@ -332,9 +333,11 @@ public class VersionManagerActivity extends SherlockActivity {
 									f = new java.io.File(f.getParent());
 									if(!f.isDirectory()) f.mkdirs();
 									
-			                        BufferedOutputStream fout = new BufferedOutputStream(new FileOutputStream(loc + zeName));           
-			                        for (int c = zin.read(); c != -1; c = zin.read()) {
-			                            fout.write(c);
+									FileOutputStream fout = new FileOutputStream(loc + zeName);           
+			                        byte[] buffer = new byte[1024*2*2];
+			                        int b = -1;
+			                        while((b = zin.read(buffer)) != -1){
+			                        	fout.write(buffer, 0, b);
 			                        }
 			                        zin.closeEntry();
 			                        fout.close();
