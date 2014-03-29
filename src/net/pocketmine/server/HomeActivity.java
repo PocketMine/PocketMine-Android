@@ -167,14 +167,6 @@ public class HomeActivity extends SherlockActivity {
 		if (isStarted) {
 			showStats(false);
 		}
-
-		LicenseChecker mChecker = new LicenseChecker(this,
-				new ServerManagedPolicy(this, new AESObfuscator(new byte[] {
-						-46, 65, 30, -128, -103, -57, 74, -64, 51, 88, -95,
-						-45, 77, -117, -36, -113, -11, 32, -64, 89 },
-						getPackageName(), Secure.getString(
-								getContentResolver(), Secure.ANDROID_ID))), "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgLp2Fgjhtm9ex+fKcUt6Pz09PQcttLc8FdH8tVBNMikRk3LbSLVytQUK1+Zxy0FBgpQVQCuBhUorfIvcGpE1G7Q3sAa5OiJw+3qw6WT9rdp6m/etI2nHcC49+AuWWKoTzwju1LUzku7fVIHd9Cqu9KxXIwQcI4FbmwRWGU+txZkYNol2m740p+mFBYp6xmQaYJ3DCM+/OeQORZ0mNGcEX5kYgycs35Fm9NkUYL3WB/2WP7LR32AjbeAPCuMMuZbAg2Krco2nd6jmmRh5SpzFUNke4xi7nQ9bhzRDQkSV6EG/SO6GiOYpfUzUVbRN5soVRvDr9t1pN/UUuiUZq8KEcwIDAQAB");
-		mChecker.checkAccess(new CheckerCallback());
 	}
 
 	// http://stackoverflow.com/questions/6064510/how-to-get-ip-address-of-the-device
