@@ -1,0 +1,14 @@
+<net.pocketmine.forum.DynamicScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/plugin_reviews_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReviewActivity" >
+
+    <LinearLayout
+        android:id="@+id/plugin_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+</net.pocketmine.forum.DynamicScrollView>

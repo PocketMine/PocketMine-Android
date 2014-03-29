@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/player_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,15 +17,15 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/stat_download"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/player_name"
         android:text="@string/before_anything" />
 
     <ProgressBar
-        android:id="@+id/progressBar1"
+        android:id="@+id/plugins_loading"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         android:id="@+id/installProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/progressBar1"
+        android:layout_below="@+id/plugins_loading"
         android:layout_centerHorizontal="true"
         android:text="@string/preparing_string" />
 

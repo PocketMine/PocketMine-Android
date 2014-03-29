@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip" >
+
+        <ImageView
+            android:id="@+id/review_image"
+            android:layout_width="54dip"
+            android:layout_height="54dip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="2dip"
+            android:src="#aaa" />
+
+        <TextView
+            android:id="@+id/review_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dip"
+            android:layout_toRightOf="@+id/review_image"
+            android:text="@string/review_author"
+            android:textStyle="bold" />
+
+        <RatingBar
+            android:id="@+id/review_rate"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/review_author"
+            android:layout_below="@+id/review_author"
+            android:rating="3.5" />
+
+        <TextView
+            android:id="@+id/review_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/review_rate"
+            android:layout_marginLeft="5dip"
+            android:layout_marginTop="-2dip"
+            android:layout_toRightOf="@+id/review_rate"
+            android:text="@string/review_version" />
+
+        <TextView
+            android:id="@+id/review_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/review_rate"
+            android:layout_below="@+id/review_rate"
+            android:layout_marginTop="2dip" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/review_author_response"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ddd"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="64dip"
+            android:text="@string/review_author_response"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/review_author_response_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="64dip" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#aaa" />
+
+</LinearLayout>

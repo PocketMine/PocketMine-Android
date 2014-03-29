@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dip" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/more_featured"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/plugins_featured"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/more_featured"
+                style="@style/dlButton"
+                android:layout_width="100dip"
+                android:layout_height="23dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/more" />
+        </RelativeLayout>
+
+        <net.pocketmine.forum.DynamicLayout
+            android:id="@+id/plugins_featured"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal" >
+        </net.pocketmine.forum.DynamicLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/more_essential"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/plugins_essential"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/more_essential"
+                style="@style/dlButton"
+                android:layout_width="100dip"
+                android:layout_height="23dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/more" />
+        </RelativeLayout>
+
+        <net.pocketmine.forum.DynamicLayout
+            android:id="@+id/plugins_essential"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal" >
+        </net.pocketmine.forum.DynamicLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/more_popular"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/plugins_popular"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/more_popular"
+                style="@style/dlButton"
+                android:layout_width="100dip"
+                android:layout_height="23dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/more" />
+        </RelativeLayout>
+
+        <net.pocketmine.forum.DynamicLayout
+            android:id="@+id/plugins_popular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal" >
+        </net.pocketmine.forum.DynamicLayout>
+    </LinearLayout>
+
+</ScrollView>

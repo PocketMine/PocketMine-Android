@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/plugin_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="4dip"
+        android:layout_marginLeft="4dip"
+        android:layout_marginRight="4dip"
+        android:layout_marginTop="4dip"
+        android:background="@drawable/bg_drawable" >
+
+        <ImageView
+            android:id="@+id/plugin_icon"
+            android:layout_width="64dip"
+            android:layout_height="64dip"
+            android:layout_marginRight="5dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/plugin_more"
+            android:layout_width="9dp"
+            android:layout_height="30dp"
+            android:src="@drawable/more"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/plugin_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/plugin_more"
+            android:layout_toRightOf="@+id/plugin_icon"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/plugin"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/plugin_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/plugin_name"
+            android:layout_below="@+id/plugin_name"
+            android:layout_toRightOf="@+id/plugin_icon"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/plugin_author" />
+
+        <RatingBar
+            android:id="@+id/plugin_rate"
+            style="?android:attr/ratingBarStyleSmall"
+            android:rating="3.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/plugin_author"
+            android:layout_below="@+id/plugin_author" />
+
+        <TextView
+            android:id="@+id/plugin_rate_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/plugin_rate"
+            android:layout_toRightOf="@+id/plugin_rate"
+            android:layout_marginLeft="3dip"
+            android:layout_marginTop="-2dip"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="1" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,321 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eee"
+    android:orientation="vertical"
+    tools:context=".DetailsActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <ImageView
+            android:id="@+id/plugin_icon"
+            android:layout_width="96dip"
+            android:layout_height="96dip"
+            android:layout_marginRight="5dip"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/plugin_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/plugin_icon"
+            android:layout_toRightOf="@+id/plugin_icon"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="@string/plugin"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/plugin_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/plugin_name"
+            android:layout_toRightOf="@+id/plugin_icon"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="@string/plugin_author"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/plugin_download"
+            style="@style/dlButton"
+            android:layout_width="100dip"
+            android:layout_height="23dip"
+            android:layout_alignBottom="@+id/plugin_icon"
+            android:layout_alignRight="@+id/plugin_name"
+            android:text="DOWNLOAD" />
+
+        <Button
+            android:id="@+id/plugin_update"
+            style="@style/dlButton"
+            android:layout_width="100dip"
+            android:layout_height="23dip"
+            android:layout_alignBottom="@+id/plugin_download"
+            android:layout_alignRight="@+id/plugin_name"
+            android:layout_marginBottom="27dip"
+            android:text="UPDATE" />
+
+        <RelativeLayout
+            android:id="@+id/plugin_progress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/plugin_icon"
+            android:layout_alignRight="@+id/plugin_name"
+            android:layout_marginLeft="101dip"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/plugin_progress_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/plugin_download_cancel" />
+
+            <ProgressBar
+                android:id="@+id/plugin_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/plugin_progress_info"
+                android:layout_toLeftOf="@+id/plugin_download_cancel"
+                android:indeterminate="true" />
+
+            <ImageView
+                android:id="@+id/plugin_download_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:contentDescription="Cancel"
+                android:src="@drawable/ic_action_cancel" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:background="#0078AA" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dip" >
+
+                <RatingBar
+                    android:id="@+id/plugin_rate"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:rating="3.5" />
+
+                <TextView
+                    android:id="@+id/plugin_rate_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginTop="-2dip"
+                    android:layout_toRightOf="@+id/plugin_rate"
+                    android:text="0" />
+
+                <TextView
+                    android:id="@+id/plugin_downloads"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/plugin_rate_count"
+                    android:text="Downloads: 0" />
+
+                <TextView
+                    android:id="@+id/plugin_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/plugin_downloads"
+                    android:layout_alignBottom="@+id/plugin_downloads"
+                    android:layout_alignRight="@+id/plugin_updated"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/plugin_updated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:text="1 Jan 2014" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="#0078AA" />
+
+            <ProgressBar
+                android:id="@+id/plugin_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/plugin_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ddd"
+                    android:ellipsize="end"
+                    android:padding="10dip"
+                    android:singleLine="true"
+                    android:text="@string/plugin_description"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/plugin_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:onClick="expandDesc"
+                    android:padding="10dip"
+                    android:text="@string/plugin_description" />
+
+                <WebView
+                    android:id="@+id/plugin_description_html"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/plugin_desc_expand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="expandDesc"
+                    android:src="@drawable/ic_action_expand" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:background="#0078AA" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ddd"
+                    android:ellipsize="end"
+                    android:padding="10dip"
+                    android:singleLine="true"
+                    android:text="@string/plugin_reviews"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip"
+                    android:background="@drawable/gray_border"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#bbb"
+                        android:padding="5dip"
+                        android:text="@string/plugin_rating" />
+
+                    <TextView
+                        android:id="@+id/plugin_rate2_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dip"
+                        android:text="Current rating: 3.5"
+                        android:textSize="36sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dip" >
+
+                        <RatingBar
+                            android:id="@+id/plugin_rate2"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:rating="3.5" />
+
+                        <TextView
+                            android:id="@+id/plugin_rate2_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="5dip"
+                            android:layout_marginTop="-2dip"
+                            android:layout_toRightOf="@+id/plugin_rate2"
+                            android:text="0" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/plugin_reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dip" >
+
+                    <Button
+                        android:id="@+id/more_reviews"
+                        style="@style/dlButton"
+                        android:layout_width="100dip"
+                        android:layout_height="23dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10dip"
+                        android:text="@string/more" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:layout_marginTop="5dip"
+                    android:background="#0078AA" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ddd"
+                    android:ellipsize="end"
+                    android:padding="10dip"
+                    android:singleLine="true"
+                    android:text="@string/plugin_links"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:id="@+id/plugin_links"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

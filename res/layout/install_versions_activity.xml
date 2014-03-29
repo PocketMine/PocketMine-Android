@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/player_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -20,8 +20,8 @@
         android:id="@+id/version_select"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/player_name"
+        android:layout_below="@+id/player_name"
         android:layout_marginTop="17dp"
         android:layout_toLeftOf="@+id/dlBtn" />
 
@@ -35,23 +35,23 @@
         android:text="Install" />
 
     <Button
-        android:id="@+id/skipInstallVer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/version_select"
-        android:layout_below="@+id/version_select"
-        android:layout_marginTop="20dp"
-        android:text="@string/skip_version_sel"
-        android:visibility="gone" />
-
-    <Button
         android:id="@+id/dlDevBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignLeft="@+id/version_select"
+        android:layout_alignRight="@+id/dlBtn"
         android:layout_below="@+id/version_select"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:text="@string/install_dev" />
+
+    <Button
+        android:id="@+id/skipInstallVer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dlDevBtn"
+        android:layout_below="@+id/dlDevBtn"
+        android:layout_marginTop="16dp"
+        android:text="@string/skip_version_sel" 
+        android:visibility="gone" />
 
 </RelativeLayout>
