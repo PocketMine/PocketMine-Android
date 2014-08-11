@@ -201,7 +201,7 @@ public class ConfigActivity extends SherlockActivity {
 		setValue(R.id.config_desc, "description",
 				"Server made using PocketMine-MP");
 		setValue(R.id.config_motd, "motd", "Welcome @player to this server!");
-		setValue(R.id.config_ip, "server-ip", "");
+		//setValue(R.id.config_ip, "server-ip", "");
 		// *server-type
 		ram64.setChecked(false);
 		ram128.setChecked(false);
@@ -336,10 +336,10 @@ public class ConfigActivity extends SherlockActivity {
 		putValueBool(R.id.config_whitelist, "whitelist");
 		putValueBool(R.id.config_query, "enable-query");
 		putValueBool(R.id.config_rcon, "enable-rcon");
-		putValueBool(R.id.config_usage, "send-usage");
+		//putValueBool(R.id.config_usage, "send-usage");
 		putValueString(R.id.config_desc, "description");
 		putValueString(R.id.config_motd, "motd");
-		putValueString(R.id.config_ip, "server-ip");
+		//putValueString(R.id.config_ip, "server-ip");
 		if (!values.containsKey("server-type"))
 			values.put("server-type", "normal");
 		values.put("memory-limit", ram + "M");

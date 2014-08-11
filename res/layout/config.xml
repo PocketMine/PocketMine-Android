@@ -70,12 +70,15 @@
             android:inputType="text"
             android:text="Welcome @player to this server!" />
 
+        
+        <!--
         <CheckBox
             android:id="@+id/config_usage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="@string/config_usage" />
+            -->
 
         <CheckBox
             android:id="@+id/config_query"
@@ -316,6 +319,7 @@
             android:layout_marginTop="10dip"
             android:orientation="vertical" >
 
+            <!--
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -328,6 +332,7 @@
                 android:ems="10"
                 android:digits="0123456789."
                 android:text="" />
+                -->
             
             <TextView
                 android:layout_width="wrap_content"

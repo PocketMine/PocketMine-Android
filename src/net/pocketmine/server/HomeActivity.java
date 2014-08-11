@@ -40,6 +40,11 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.google.android.vending.licensing.AESObfuscator;
 import com.google.android.vending.licensing.LicenseChecker;
 import com.google.android.vending.licensing.ServerManagedPolicy;
@@ -170,12 +175,17 @@ public class HomeActivity extends SherlockActivity {
 			showStats(false);
 		}
 
-		LicenseChecker mChecker = new LicenseChecker(this,
+		PublisherAdView adView = (PublisherAdView) findViewById(R.id.adView);
+		adView.loadAd(new PublisherAdRequest.Builder().build());
+
+		LicenseChecker mChecker = new LicenseChecker(
+				this,
 				new ServerManagedPolicy(this, new AESObfuscator(new byte[] {
 						-46, 65, 30, -128, -103, -57, 74, -64, 51, 88, -95,
 						-45, 77, -117, -36, -113, -11, 32, -64, 89 },
 						getPackageName(), Secure.getString(
-								getContentResolver(), Secure.ANDROID_ID))), "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgLp2Fgjhtm9ex+fKcUt6Pz09PQcttLc8FdH8tVBNMikRk3LbSLVytQUK1+Zxy0FBgpQVQCuBhUorfIvcGpE1G7Q3sAa5OiJw+3qw6WT9rdp6m/etI2nHcC49+AuWWKoTzwju1LUzku7fVIHd9Cqu9KxXIwQcI4FbmwRWGU+txZkYNol2m740p+mFBYp6xmQaYJ3DCM+/OeQORZ0mNGcEX5kYgycs35Fm9NkUYL3WB/2WP7LR32AjbeAPCuMMuZbAg2Krco2nd6jmmRh5SpzFUNke4xi7nQ9bhzRDQkSV6EG/SO6GiOYpfUzUVbRN5soVRvDr9t1pN/UUuiUZq8KEcwIDAQAB");
+								getContentResolver(), Secure.ANDROID_ID))),
+				"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgLp2Fgjhtm9ex+fKcUt6Pz09PQcttLc8FdH8tVBNMikRk3LbSLVytQUK1+Zxy0FBgpQVQCuBhUorfIvcGpE1G7Q3sAa5OiJw+3qw6WT9rdp6m/etI2nHcC49+AuWWKoTzwju1LUzku7fVIHd9Cqu9KxXIwQcI4FbmwRWGU+txZkYNol2m740p+mFBYp6xmQaYJ3DCM+/OeQORZ0mNGcEX5kYgycs35Fm9NkUYL3WB/2WP7LR32AjbeAPCuMMuZbAg2Krco2nd6jmmRh5SpzFUNke4xi7nQ9bhzRDQkSV6EG/SO6GiOYpfUzUVbRN5soVRvDr9t1pN/UUuiUZq8KEcwIDAQAB");
 		mChecker.checkAccess(new CheckerCallback());
 	}
 
@@ -352,7 +362,7 @@ public class HomeActivity extends SherlockActivity {
 									final EditText input = new EditText(kickBtn
 											.getContext());
 									LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-											LinearLayout.LayoutParams.FILL_PARENT,
+											LinearLayout.LayoutParams.MATCH_PARENT,
 											LinearLayout.LayoutParams.WRAP_CONTENT);
 									layoutParams.setMargins(dip2px(8), 0,
 											dip2px(8), 0);
@@ -470,7 +480,7 @@ public class HomeActivity extends SherlockActivity {
 		sub.add(0, PLUGINS_CODE, 0, getString(R.string.abs_plugins));
 		sub.add(0, FORCE_CLOSE_CODE, 0, getString(R.string.abs_force_close));
 		sub.add(0, ABOUT_US_CODE, 0, getString(R.string.abs_about));
-		if(BuildConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			sub.add(0, DEV_CODE, 0, "Developer");
 		// sub.add(0, SETTING_CODE, 0, getString(R.string.abs_settings));
 		sub.getItem().setShowAsAction(
@@ -526,7 +536,8 @@ public class HomeActivity extends SherlockActivity {
 	}
 
 	void setup() throws Exception {
-		Class.forName("com.google.android"+".vending"+".licensing"+".LicenseChecker");
+		Class.forName("com.google.android" + ".vending" + ".licensing"
+				+ ".LicenseChecker");
 	}
 
 	public static void hangUp() {

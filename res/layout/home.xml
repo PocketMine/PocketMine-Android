@@ -1,168 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <com.google.android.gms.ads.doubleclick.PublisherAdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="15dip" >
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/ad_unit_id" />
 
-        <TextView
-            style="@style/ListTitleText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dip"
-            android:text="@string/server_handler" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/RunTime_Http"
-                style="@color/text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/server_online" />
-
-            <Button
-                android:id="@+id/RunTime_Http_Kill"
-                style="@color/text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/server_kill" />
-        </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/adView" >
 
         <LinearLayout
-            android:id="@+id/stats"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone" >
+            android:padding="15dip" >
 
             <TextView
                 style="@style/ListTitleText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/server_info" />
-
-            <TextView
-                android:id="@+id/stat_ip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/stat_ip" />
+                android:layout_marginBottom="2dip"
+                android:text="@string/server_handler" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
                 android:orientation="horizontal" >
 
-                <TextView
-                    android:id="@+id/stat_online"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/RunTime_Http"
+                    style="@color/text"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/stat_online" />
+                    android:gravity="center"
+                    android:text="@string/server_online" />
 
-                <TextView
-                    android:id="@+id/stat_ram"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/RunTime_Http_Kill"
+                    style="@color/text"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/stat_ram" />
+                    android:gravity="center"
+                    android:text="@string/server_kill" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/stats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <TextView
-                    android:id="@+id/stat_download"
-                    android:layout_width="match_parent"
+                    style="@style/ListTitleText"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/stat_download" />
+                    android:text="@string/server_info" />
 
                 <TextView
-                    android:id="@+id/stat_upload"
+                    android:id="@+id/stat_ip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/stat_upload" />
-            </LinearLayout>
+                    android:text="@string/stat_ip" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/stat_tps"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/stat_tps" />
+                    android:orientation="horizontal" >
 
-                <!--
+                    <TextView
+                        android:id="@+id/stat_online"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/stat_online" />
+
+                    <TextView
+                        android:id="@+id/stat_ram"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/stat_ram" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/stat_download"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/stat_download" />
+
+                    <TextView
+                        android:id="@+id/stat_upload"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/stat_upload" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/stat_tps"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/stat_tps" />
+
+                    <!--
                      <TextView
                     android:id="@+id/stat_"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/stat_" />
-                -->
-            </LinearLayout>
-            
-            <TextView
-                style="@style/ListTitleText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="6dip"
-                android:text="@string/server_actions" />
+                    -->
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <Button
-                    android:id="@+id/action_op"
-                    android:layout_width="wrap_content"
+                <TextView
+                    style="@style/ListTitleText"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_op" />
+                    android:paddingTop="6dip"
+                    android:text="@string/server_actions" />
 
-                <Button
-                    android:id="@+id/action_deop"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <Button
+                        android:id="@+id/action_op"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_op" />
+
+                    <Button
+                        android:id="@+id/action_deop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_deop" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/ListTitleText"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_deop" />
+                    android:paddingTop="6dip"
+                    android:text="@string/server_players" />
 
+                <LinearLayout
+                    android:id="@+id/players"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </LinearLayout>
             </LinearLayout>
-            
-            <TextView
-                style="@style/ListTitleText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="6dip"
-                android:text="@string/server_players" />
-
-            <LinearLayout
-                android:id="@+id/players"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-            </LinearLayout>
-
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+</RelativeLayout>
