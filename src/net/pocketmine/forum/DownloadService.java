@@ -4,14 +4,12 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import net.pocketmine.forum.PluginListManager.PluginDownloadInfo;
@@ -19,17 +17,12 @@ import net.pocketmine.server.ServerUtils;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
-import org.apache.commons.compress.archivers.sevenz.SevenZFile;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 
-
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -78,7 +71,6 @@ public class DownloadService extends Service {
 		final int id = intent.getIntExtra("id", -1);
 		Log.d("DownloadService", "ID:" + id);
 		if (intent.getBooleanExtra("stop", false)) {
-			Log.d("DownloadService", "Stop " + id + " vs " + cid);
 			if (id == cid) {
 				Log.d("DownloadService", "Stop current");
 				try {
@@ -222,7 +214,7 @@ public class DownloadService extends Service {
 				ArrayList<String> files = null;
 				if (iof != -1) {
 					String ext = path.substring(iof);
-					if (ext.equals(".php") || ext.equals(".pmf")) {
+					if (ext.equals(".php") || ext.equals(".pmf") || ext.equals(".phar")) {
 						installAsIs = true;
 					} else if (ext.equals(".zip")) {
 						installAsIs = false;
@@ -246,7 +238,8 @@ public class DownloadService extends Service {
 									String extresion = zeName
 											.substring(extDot + 1);
 									if (extresion.equals("php")
-											|| extresion.equals("pmf"))
+											|| extresion.equals("pmf")
+											|| extresion.equals("phar"))
 										extract = true;
 								}
 								if (extract) {
@@ -324,7 +317,8 @@ public class DownloadService extends Service {
 										String extresion = zeName
 												.substring(extDot + 1);
 										if (extresion.equals("php")
-												|| extresion.equals("pmf"))
+												|| extresion.equals("pmf")
+												|| extresion.equals("phar"))
 											extract = true;
 									}
 									if (extract) {

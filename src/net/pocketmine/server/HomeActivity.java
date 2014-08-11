@@ -88,17 +88,19 @@ public class HomeActivity extends SherlockActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+		try {
+			setup();
+			super.onCreate(savedInstanceState);
+		} catch (Exception e) {
+			return;
+		}
 
 		inflater = getLayoutInflater();
 
 		ha = this;
 		setContentView(R.layout.home);
 		// startService(new Intent(mContext, ServerService.class));
-		ServerUtils.StrictModePermitAll();
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		// ServerUtils.setHttpDocsUri(prefs.getString("k_docs_dir", "htdocs"));
-		// ServerUtils.setServerPort(prefs.getString("k_server_port", "8080"));
 
 		ServerUtils.setContext(mContext);
 
@@ -110,8 +112,6 @@ public class HomeActivity extends SherlockActivity {
 
 			@Override
 			public void onClick(View v) {
-
-				ServerUtils.runServer();
 				btn_runServer.setEnabled(false);
 				btn_stopServer.setEnabled(true);
 				btn_runServer.setText(R.string.server_online);
@@ -130,6 +130,8 @@ public class HomeActivity extends SherlockActivity {
 				startService(servInt);
 				isStarted = true;
 				showStats(true);
+
+				ServerUtils.runServer();
 			}
 		});
 
@@ -167,6 +169,14 @@ public class HomeActivity extends SherlockActivity {
 		if (isStarted) {
 			showStats(false);
 		}
+
+		LicenseChecker mChecker = new LicenseChecker(this,
+				new ServerManagedPolicy(this, new AESObfuscator(new byte[] {
+						-46, 65, 30, -128, -103, -57, 74, -64, 51, 88, -95,
+						-45, 77, -117, -36, -113, -11, 32, -64, 89 },
+						getPackageName(), Secure.getString(
+								getContentResolver(), Secure.ANDROID_ID))), "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgLp2Fgjhtm9ex+fKcUt6Pz09PQcttLc8FdH8tVBNMikRk3LbSLVytQUK1+Zxy0FBgpQVQCuBhUorfIvcGpE1G7Q3sAa5OiJw+3qw6WT9rdp6m/etI2nHcC49+AuWWKoTzwju1LUzku7fVIHd9Cqu9KxXIwQcI4FbmwRWGU+txZkYNol2m740p+mFBYp6xmQaYJ3DCM+/OeQORZ0mNGcEX5kYgycs35Fm9NkUYL3WB/2WP7LR32AjbeAPCuMMuZbAg2Krco2nd6jmmRh5SpzFUNke4xi7nQ9bhzRDQkSV6EG/SO6GiOYpfUzUVbRN5soVRvDr9t1pN/UUuiUZq8KEcwIDAQAB");
+		mChecker.checkAccess(new CheckerCallback());
 	}
 
 	// http://stackoverflow.com/questions/6064510/how-to-get-ip-address-of-the-device
@@ -431,13 +441,6 @@ public class HomeActivity extends SherlockActivity {
 		super.onStart();
 
 		if (!ServerUtils.checkIfInstalled()) {
-			/*
-			 * btn_runServer.setEnabled(false);
-			 * btn_stopServer.setEnabled(false); InstallerAsync ia = new
-			 * InstallerAsync(); ia.tv_install_exec = (TextView)
-			 * findViewById(R.id.tv_bin); ia.tv_install_exec.setVisibility(1);
-			 * ia.tv_install_exec.setText(R.string.install_bin); ia.execute();
-			 */
 			startActivity(new Intent(mContext, InstallActivity.class));
 		}
 	}
@@ -467,7 +470,8 @@ public class HomeActivity extends SherlockActivity {
 		sub.add(0, PLUGINS_CODE, 0, getString(R.string.abs_plugins));
 		sub.add(0, FORCE_CLOSE_CODE, 0, getString(R.string.abs_force_close));
 		sub.add(0, ABOUT_US_CODE, 0, getString(R.string.abs_about));
-		// sub.add(0, DEV_CODE, 0, "Developer");
+		if(BuildConfig.DEBUG)
+			sub.add(0, DEV_CODE, 0, "Developer");
 		// sub.add(0, SETTING_CODE, 0, getString(R.string.abs_settings));
 		sub.getItem().setShowAsAction(
 				MenuItem.SHOW_AS_ACTION_IF_ROOM
@@ -519,6 +523,20 @@ public class HomeActivity extends SherlockActivity {
 		}
 
 		return true;
+	}
+
+	void setup() throws Exception {
+		Class.forName("com.google.android"+".vending"+".licensing"+".LicenseChecker");
+	}
+
+	public static void hangUp() {
+		ha.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				hangUp();
+			}
+		});
 	}
 
 	/*

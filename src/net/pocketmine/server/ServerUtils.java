@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 
 import android.content.Context;
 import android.util.Log;
@@ -24,9 +23,6 @@ public final class ServerUtils {
 	static Context mContext;
 	private static java.io.OutputStream stdin;
 	private static java.io.InputStream stdout;
-
-	// private static String serverPort;
-	// private static String httpdUri;
 
 	final public static void setContext(Context mContext) {
 		ServerUtils.mContext = mContext;
@@ -54,49 +50,13 @@ public final class ServerUtils {
 	 *            Name Of Process that you want to kill
 	 * @return boolean
 	 */
-
 	final public static Boolean killProcessByName(String mProcessName) {
 
 		return execCommand(getAppDirectory() + "/killall " + mProcessName);
 	}
 
-	/**
-	 * This method is responsible for invoking
-	 * {@link ServerUtils.killProcessByName} which kills all the running
-	 * instances of <strong>PHP</strong>, <strong>LIGHTTPD</strong>,
-	 * <strong>MYSQLD</strong>, <strong>MYSQL Monitor </strong>
-	 * 
-	 * @return
-	 */
-	/*
-	 * final public static void setServerPort(String port) { serverPort = port;
-	 * 
-	 * }
-	 * 
-	 * final public static void setHttpDocsUri(String Uri) {
-	 * 
-	 * httpdUri = Uri;
-	 * 
-	 * }
-	 */
-
 	final public static void stopServer() {
-
-		/**
-		 * 
-		 * Kill the Running Instances of all called process name. PHP is
-		 * automatically kill when instance <strong>LIGHTTPD</strong> is
-		 * destroyed. Anyway if it is unable to kill <strong>PHP</strong> lets
-		 * kill by invoking <b>killall</b> command
-		 */
-		// killProcessByName("lighttpd");
-		/**
-		 * see above doc why i called PHP here
-		 */
 		killProcessByName("php");
-		// killProcessByName("mysqld");
-		// killProcessByName("mysql-monitor");
-
 	}
 
 	static Process serverProc;
@@ -113,19 +73,29 @@ public final class ServerUtils {
 	}
 
 	final public static void runServer() {
-		// restoreOrCreateServerData();
-		// restoreConfiguration("lighttpd.conf");
-		// restoreConfiguration("php.ini");
-		// restoreConfiguration("mysql.ini");
+		File f = new File(getDataDirectory(), "tmp/");
+		if (!f.exists()) {
+			f.mkdir();
+		} else if (!f.isDirectory()) {
+			f.delete();
+			f.mkdir();
+		}
 		setPermission();
 
+		String file = "/PocketMine-MP.php";
+		if (new File(getDataDirectory() + "/PocketMine-MP.phar").exists()) {
+			file = "/PocketMine-MP.phar";
+		}
 		String[] serverCmd = { getAppDirectory() + "/php",
 				// getAppDirectory() + "/php_data/PocketMine-MP.php"
-				getDataDirectory() + "/PocketMine-MP.php" };
+				getDataDirectory() + file };
 
+		ProcessBuilder builder = new ProcessBuilder(serverCmd);
+		builder.redirectErrorStream(true);
+		builder.directory(new File(getDataDirectory()));
+		builder.environment().put("TMPDIR", getDataDirectory() + "/tmp");
 		try {
-			serverProc = (new ProcessBuilder(serverCmd)).redirectErrorStream(
-					true).start();
+			serverProc = builder.start();
 			stdout = serverProc.getInputStream();
 			stdin = serverProc.getOutputStream();
 
@@ -317,76 +287,17 @@ public final class ServerUtils {
 			execCommand("/system/bin/chmod 777 " + getAppDirectory() + "/php");
 			execCommand("/system/bin/chmod 777 " + getAppDirectory()
 					+ "/killall");
-			// execCommand("/system/bin/chmod 755 " + getAppDirectory() +
-			// "/tmp");
-
 		} catch (java.lang.Exception e) {
 			Log.e(TAG, "setPermission", e);
 		}
 
 	}
 
-	/*
-	 * final private static void restoreConfiguration(String fileName) {
-	 * 
-	 * File isConf = new File(getHttpDirectory() + "/conf/" + fileName); if
-	 * (!isConf.exists()) {
-	 * 
-	 * try {
-	 * 
-	 * String mString;
-	 * 
-	 * java.io.InputStream mStream = mContext.getAssets().open( fileName,
-	 * AssetManager.ACCESS_BUFFER);
-	 * 
-	 * java.io.BufferedWriter outputStream = new java.io.BufferedWriter( new
-	 * java.io.FileWriter(getHttpDirectory() + "/tmp/" + fileName));
-	 * 
-	 * int c; while ((c = mStream.read()) != -1) { outputStream.write(c); }
-	 * outputStream.close(); mStream.close();
-	 * 
-	 * mString = org.apache.commons.io.FileUtils.readFileToString( new
-	 * File(getHttpDirectory() + "/tmp/" + fileName), "UTF-8");
-	 * 
-	 * mString = mString.replace("%app_dir%", getAppDirectory()); mString =
-	 * mString.replace("%http_dir%", getHttpDirectory()); mString =
-	 * mString.replace("%port%", serverPort);
-	 * org.apache.commons.io.FileUtils.writeStringToFile(new File(
-	 * getHttpDirectory() + "/conf/" + fileName), mString, "UTF-8"); } catch
-	 * (java.lang.Exception e) { Log.e(TAG, "Unable to copy " + fileName +
-	 * " from assets", e);
-	 * 
-	 * } }
-	 * 
-	 * }
-	 */
-
-	/*
-	 * final private static void restoreOrCreateServerData() {
-	 * 
-	 * File mFile = new File(getHttpDirectory() + "/conf/"); if
-	 * (!mFile.exists()) mFile.mkdirs();
-	 * 
-	 * mFile = new File(getHttpDirectory() + "/php_data/");
-	 * 
-	 * if (!mFile.exists()) mFile.mkdir();
-	 * 
-	 * mFile = new File(getHttpDirectory() + "/logs/");
-	 * 
-	 * if (!mFile.exists()) mFile.mkdir(); mFile = new File(getHttpDirectory() +
-	 * "/tmp/");
-	 * 
-	 * if (!mFile.exists()) mFile.mkdir();
-	 * 
-	 * mFile = null;
-	 * 
-	 * }
-	 */
-
 	public static boolean checkIfInstalled() {
 
 		File mPhp = new File(getAppDirectory() + "/php");
 		File mPM = new File(getDataDirectory() + "/PocketMine-MP.php");
+		File mPMPhar = new File(getDataDirectory() + "/PocketMine-MP.phar");
 
 		int saveVer = HomeActivity.prefs != null ? HomeActivity.prefs.getInt(
 				"filesVersion", 0) : 0;
@@ -395,7 +306,7 @@ public final class ServerUtils {
 		// File mLighttpd = new File(getAppDirectory() + "/lighttpd");
 		// File mMySqlMon = new File(getAppDirectory() + "/mysql-monitor");
 
-		if (mPhp.exists() && mPM.exists() && saveVer == 3) {
+		if (mPhp.exists() && (mPM.exists() || mPMPhar.exists()) && saveVer == 4) {
 
 			return true;
 
@@ -405,100 +316,15 @@ public final class ServerUtils {
 
 	}
 
-	/**
-	 * StrictMode.ThreadPolicy was introduced science API level 9 and its
-	 * default implementation has been change since API Level 11 and do not
-	 * allow network operation on UI Thread and lots more reason Hence, its
-	 * better to perform These Stuff outside UI Thread you may do it in
-	 * <strong>AsyncTask</strong> And this method allow to permit all
-	 * restriction made by system itself.
-	 */
-	@android.annotation.TargetApi(android.os.Build.VERSION_CODES.GINGERBREAD)
-	public static void StrictModePermitAll() {
-		try {
-			android.os.StrictMode
-					.setThreadPolicy((new android.os.StrictMode.ThreadPolicy.Builder())
-							.permitAll().build());
-		} catch (Exception e) {
-			e.printStackTrace();
-			// oops!
-		}
-	}
-
-	/**
-	 * 
-	 * @param mUsername
-	 * @param mPassword
-	 */
-
-	/*
-	 * public static void startMYSQLMointor(String mUsername, String mPassword)
-	 * { String[] query = new String[] { getAppDirectory() + "/mysql-monitor",
-	 * "-h", "127.0.0.1", "-T", "-f", "-r", "-t", "-E", "--disable-pager", "-n",
-	 * "--user=" + mUsername, "--password=" + mPassword,
-	 * "--default-character-set=utf8", "-L" }; try {
-	 * 
-	 * ProcessBuilder pb = (new ProcessBuilder(query));
-	 * pb.redirectErrorStream(true); proc = pb.start(); stdin =
-	 * proc.getOutputStream(); stdout = proc.getInputStream();
-	 * 
-	 * } catch (IOException e) {
-	 * 
-	 * Log.e(TAG, "MSQL Monitor", e); /** I have commented
-	 * <string>proc.destroy</strong> because this is usually cause bug
-	 *//*
-		 * // proc.destroy(); }
-		 * 
-		 * }
-		 */
-
 	public static void executeCMD(String CCmd) {
 
 		try {
-			/**
-			 * \r\n lets the code to be executed and getBytes converts chars in
-			 * bytes Array
-			 */
 			stdin.write((CCmd + "\r\n").getBytes());
 			stdin.flush();
 		} catch (Exception e) {
 			// stdin.close();
-			Log.e(TAG, "ERROR on Executing: " + CCmd, e);
+			Log.e(TAG, "Cannot execute: " + CCmd, e);
 
 		}
-		// return readExecutedSQLShellCMD();
-
 	}
-
-	/**
-	 * This Method is not in use any more because its causing bug after end of
-	 * iteration
-	 * 
-	 * @see mySQLShell().ShellAsync()
-	 * @return
-	 * @throws IOException
-	 */
-	/*
-	 * public static String readExecutedSQLShellCMD() throws IOException { /*
-	 * Returns an input stream that is connected to the standard output stream
-	 * (stdout) of the native process represented by this object
-	 *//*
-		 * java.io.BufferedReader buffr = new java.io.BufferedReader( new
-		 * java.io.InputStreamReader(stdout)); String sb = new String(); try {
-		 * while (true) { String READ = buffr.readLine();
-		 * 
-		 * if (READ == null) { break; } sb += READ + "\n";
-		 * 
-		 * }
-		 * 
-		 * Log.e(TAG, "Result = " + sb.toString()); } catch (IOException e) {
-		 * 
-		 * stdout.close(); Log.e(TAG, "Unable to read mysql stream", e);
-		 * 
-		 * }
-		 * 
-		 * return sb.toString();
-		 * 
-		 * }
-		 */
 }
