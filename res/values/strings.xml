@@ -117,7 +117,13 @@
     <string name="link_sample">Sample</string>
     <string name="link_sample_url">http://google.pl/</string>
     <string name="title_activity_developer">DeveloperActivity</string>
-    
     <string name="ad_unit_id">/23767766/PocketMine_Android</string>
+    <string name="channel_stable">Stable</string>
+    <string name="download">Download</string>
+    <string name="choose_channel">Choose channel:</string>
+    <string name="dummy_version">Version: Unknown (API version: Unknown)</string>
+    <string name="dummy_date">1/1/1970</string>
+    <string name="channel_beta">Beta</string>
+    <string name="channel_dev">Development</string>
 
 </resources>

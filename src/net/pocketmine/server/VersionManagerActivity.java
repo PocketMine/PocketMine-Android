@@ -6,12 +6,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -30,7 +34,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -45,227 +52,160 @@ public class VersionManagerActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 
 		install = getIntent().getBooleanExtra("install", false);
-		setContentView(install ? R.layout.install_versions_activity
-				: R.layout.version_manager);
+		setContentView(R.layout.version_manager);
 
 		start();
 	}
 
-	public void start() {
-
-		// requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-
-		if (install
-				&& (new File(ServerUtils.getDataDirectory()
-						+ "/PocketMine-MP.php").isFile() || new File(
-						ServerUtils.getDataDirectory() + "/PocketMine-MP.phar")
-						.isFile())) {
-			final Button skipBtn = (Button) findViewById(R.id.skipInstallVer);
-			skipBtn.setVisibility(View.VISIBLE);
-			skipBtn.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					finish();
-				}
-			});
+	public String getPageContext(String url) throws IOException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(new URL(
+				url).openStream()));
+		StringBuilder sb = new StringBuilder();
+		String str;
+		while ((str = in.readLine()) != null) {
+			sb.append(str);
 		}
+		in.close();
+		return sb.toString();
+	}
 
-		final Spinner spin = (Spinner) findViewById(R.id.version_select);
-		adapter = new ArrayAdapter<CharSequence>(this,
-				android.R.layout.simple_spinner_dropdown_item);
-		adapter.add("No version selected");
+	private void start() {
+		final ProgressBar pbar = (ProgressBar) findViewById(R.id.loadingBar);
+		final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+		final Button skip = (Button) findViewById(R.id.skipBtn);
 
-		File verDir = new File(ServerUtils.getDataDirectory() + "/versions/");
-		if (!verDir.isDirectory())
-			verDir.mkdirs();
-		File[] farr = verDir.listFiles();
-		final List<String> downloadedVers = new ArrayList<String>();
-		if (farr != null) {
-			for (int i = 0; i < farr.length; i++) {
-				File f = farr[i];
-				if (f.getName().endsWith(".zip")) {
-					downloadedVers.add(f.getName().substring(0,
-							f.getName().length() - 4));
-				}
-				// adapter.add(f.getName());
-			}
-		}
+		pbar.setVisibility(View.VISIBLE);
+		scrollView.setVisibility(View.GONE);
+		skip.setVisibility(View.GONE);
 
-		final ProgressDialog progress = ProgressDialog.show(this,
-				"Loading versions from server...", "Please wait...", true);
-		final VersionManagerActivity ctx = this;
 		new Thread(new Runnable() {
+
 			@Override
 			public void run() {
-				StringBuilder sb = new StringBuilder();
 				try {
-					URL url = new URL(
-							"https://api.github.com/repos/PocketMine/PocketMine-MP/tags");
-					BufferedReader in = new BufferedReader(
-							new InputStreamReader(url.openStream()));
-					String str;
+					JSONObject stableObj = (JSONObject) JSONValue
+							.parse(getPageContext("http://pocketmine.net/api/?channel=stable"));
+					final String stableVersion = (String) stableObj
+							.get("version");
+					final String stableAPI = (String) stableObj
+							.get("api_version");
+					Long date = (Long) stableObj.get("date");
+					Date d = new Date(date * 1000);
+					final String stableDate = SimpleDateFormat
+							.getDateInstance().format(d);
+					final String stableDownloadURL = (String) stableObj.get("download_url");
 
-					while ((str = in.readLine()) != null) {
-						sb.append(str);
-					}
-					in.close();
-				} catch (Exception e) {
-					showToast("Error occured while loading versions from server; waiting 5 seconds and trying again.");
-					progress.dismiss();
-					try {
-						Thread.sleep(5000);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-					start();
-					return;
-				}
-				progress.dismiss();
+					JSONObject betaObj = (JSONObject) JSONValue
+							.parse(getPageContext("http://pocketmine.net/api/?channel=beta"));
+					final String betaVersion = (String) betaObj.get("version");
+					final String betaAPI = (String) betaObj.get("api_version");
+					date = (Long) betaObj.get("date");
+					d = new Date(date * 1000);
+					final String betaDate = SimpleDateFormat.getDateInstance()
+							.format(d);
+					final String betaDownloadURL = (String) betaObj.get("download_url");
 
-				final JSONArray array = (JSONArray) JSONValue.parse(sb
-						.toString());
-				runOnUiThread(new Runnable() {
-					public void run() {
-
-						for (Object obj : array) {
-							JSONObject jobj = (JSONObject) obj;
-							String verName = (String) jobj.get("name");
-							Boolean isDown = false;
-
-							for (int i = downloadedVers.size() - 1; i >= 0; i--) {
-								String str = downloadedVers.get(i);
-								if (str.equals(verName)) {
-									isDown = true;
-									downloadedVers.remove(str);
-								}
-							}
-
-							adapter.add(verName
-									+ (isDown ? "" : notDownloadedStr));
-
-						}
-
-						for (String str : downloadedVers) {
-							adapter.add(str + " (Not oficially supported)");
-						}
-					}
-				});
-				// spin.setAdapter(adapter);
-			}
-		}).start();
-
-		spin.setAdapter(adapter);
-
-		final Button dlBtn = (Button) findViewById(R.id.dlBtn);
-		dlBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				Long sid = spin.getSelectedItemId();
-				if (sid == 0) {
-					return;
-				}
-
-				CharSequence ver = adapter.getItem(sid.intValue());
-
-				Boolean needsDownload = false;
-
-				if (ver.length() > notDownloadedStr.length()
-						&& ver.toString()
-								.substring(
-										ver.length()
-												- notDownloadedStr.length())
-								.contains(notDownloadedStr)) {
-					ver = ver.subSequence(0,
-							ver.length() - notDownloadedStr.length());
-					needsDownload = true;
-				}
-
-				final CharSequence fver = ver;
-
-				if (needsDownload) {
-					download(
-							"https://github.com/PocketMine/PocketMine-MP/archive/"
-									+ fver + ".zip", fver.toString(), false);
-				} else {
-					new Thread(new Runnable() {
+					JSONObject devObj = (JSONObject) JSONValue
+							.parse(getPageContext("http://pocketmine.net/api/?channel=development"));
+					final String devVersion = (String) devObj.get("version");
+					final String devAPI = (String) devObj.get("api_version");
+					date = (Long) devObj.get("date");
+					d = new Date(date * 1000);
+					final String devDate = SimpleDateFormat.getDateInstance()
+							.format(d);
+					final String devDownloadURL = (String) devObj.get("download_url");
+					
+					runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
-							install(fver, false); // TODO: FIX!
+							TextView stableVersionView = (TextView) findViewById(R.id.stable_version);
+							TextView stableDateView = (TextView) findViewById(R.id.stable_date);
+							Button stableDownload = (Button) findViewById(R.id.download_stable);
+							TextView betaVersionView = (TextView) findViewById(R.id.beta_version);
+							TextView betaDateView = (TextView) findViewById(R.id.beta_date);
+							Button betaDownload = (Button) findViewById(R.id.download_beta);
+							TextView devVersionView = (TextView) findViewById(R.id.dev_version);
+							TextView devDateView = (TextView) findViewById(R.id.dev_date);
+							Button devDownload = (Button) findViewById(R.id.download_dev);
+
+							stableVersionView.setText("Version: "
+									+ stableVersion + " (API: " + stableAPI
+									+ ")");
+							stableDateView.setText(stableDate);
+							stableDownload.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									download(stableDownloadURL, stableVersion);
+								}
+							});
+
+							betaVersionView.setText("Version: " + betaVersion
+									+ " (API: " + betaAPI + ")");
+							betaDateView.setText(betaDate);
+							betaDownload.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									download(betaDownloadURL, betaVersion);
+								}
+							});
+
+							devVersionView.setText("Version: " + devVersion
+									+ " (API: " + devAPI + ")");
+							devDateView.setText(devDate);
+							devDownload.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									download(devDownloadURL, devVersion);
+								}
+							});
+
+							pbar.setVisibility(View.GONE);
+							scrollView.setVisibility(View.VISIBLE);
+							if (install) {
+								skip.setVisibility(ServerUtils
+										.checkIfInstalled() ? View.VISIBLE
+										: View.GONE);
+							}
 						}
-					}).start();
+					});
+				} catch (Exception err) {
+					err.printStackTrace();
+					if (install) {
+						showToast("Cannot load version list. Retrying in 5 seconds...");
+						try {
+							Thread.sleep(5000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+							runOnUiThread(new Runnable() {
+
+								@Override
+								public void run() {
+									finish();
+								}
+							});
+							return;
+						}
+						start();
+					} else {
+						showToast("Cannot load version list.");
+						runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								finish();
+							}
+						});
+					}
 				}
 			}
-		});
-
-		final Button dlDevBtn = (Button) findViewById(R.id.dlDevBtn);
-		dlDevBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				final ProgressDialog progress = ProgressDialog.show(ctx,
-						"Loading versions from server...", "Please wait...",
-						true);
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						/*
-						 * StringBuilder sb = new StringBuilder(); try { URL url
-						 * = new URL(
-						 * "https://api.github.com/repos/PocketMine/PocketMine-MP/commits"
-						 * ); BufferedReader in = new BufferedReader( new
-						 * InputStreamReader(url.openStream())); String str;
-						 * 
-						 * while ((str = in.readLine()) != null) {
-						 * sb.append(str); } in.close(); } catch (Exception e) {
-						 * showToast
-						 * ("Error occured while finding download link.");
-						 * progress.dismiss(); } progress.dismiss();
-						 * 
-						 * final JSONArray array = (JSONArray)
-						 * JSONValue.parse(sb .toString()); JSONObject obj =
-						 * (JSONObject) array.get(0); String sha = (String)
-						 * obj.get("sha"); // spin.setAdapter(adapter);
-						 * download(
-						 * "https://github.com/PocketMine/PocketMine-MP/archive/"
-						 * + sha + ".zip", sha);
-						 */
-
-						StringBuilder sb = new StringBuilder();
-						try {
-							URL url = new URL(
-									"http://www.pocketmine.net/api/?channel=development");
-							BufferedReader in = new BufferedReader(
-									new InputStreamReader(url.openStream()));
-							String str;
-
-							while ((str = in.readLine()) != null) {
-								sb.append(str);
-							}
-							in.close();
-						} catch (Exception e) {
-							showToast("Error occured while finding download link.");
-							progress.dismiss();
-						}
-						progress.dismiss();
-
-						final JSONObject obj = (JSONObject) JSONValue.parse(sb
-								.toString());
-						String ver = (String) obj.get("version");
-						String url = (String) obj.get("download_url");
-						// spin.setAdapter(adapter);
-						download(url, ver, true);
-					}
-				}).start();
-			}
-		});
+		}).start();
 	}
 
-	private void download(final String address, final String fver,
-			final Boolean phar) {
+	private void download(final String address, final String fver) {
 		final VersionManagerActivity ctx = this;
 		runOnUiThread(new Runnable() {
 
@@ -294,8 +234,7 @@ public class VersionManagerActivity extends SherlockActivity {
 									.openStream());
 							OutputStream output = new FileOutputStream(
 									ServerUtils.getDataDirectory()
-											+ "/versions/" + fver
-											+ (phar ? ".phar" : ".zip"));
+											+ "/versions/" + fver + ".phar");
 
 							byte data[] = new byte[1024];
 							long total = 0;
@@ -322,7 +261,7 @@ public class VersionManagerActivity extends SherlockActivity {
 
 						dlDialog.dismiss();
 
-						install(fver, phar);
+						install(fver);
 						// dlDialog.setTitle("Installing this version...");
 						// dlDialog.show();
 					}
@@ -332,7 +271,7 @@ public class VersionManagerActivity extends SherlockActivity {
 		});
 	}
 
-	private void install(CharSequence ver, final Boolean phar) {
+	private void install(CharSequence ver) {
 		final VersionManagerActivity ctx = this;
 		final CharSequence fver = ver;
 
@@ -356,140 +295,55 @@ public class VersionManagerActivity extends SherlockActivity {
 					public void run() {
 						try {
 							new File(ServerUtils.getDataDirectory()
-									+ "/PocketMine-MP.phar").delete();
+									+ "/PocketMine-MP.php").delete();
 						} catch (Exception e) {
-							//
 						}
-
-						if (phar) {
-							try {
-								FileInputStream in = new FileInputStream(
-										ServerUtils.getDataDirectory()
-												+ "/versions/" + fver + ".phar");
-
-								FileOutputStream out = new FileOutputStream(
-										ServerUtils.getDataDirectory()
-												+ "/PocketMine-MP.phar");
-								byte[] buffer = new byte[1024];
-								int len;
-								while ((len = in.read(buffer)) > 0) {
-									out.write(buffer, 0, len);
-								}
-								in.close();
-								out.close();
-
-								runOnUiThread(new Runnable() {
-
-									@Override
-									public void run() {
-										if (install) {
-											Intent ver = new Intent(
-													VersionManagerActivity.this,
-													ConfigActivity.class);
-											ver.putExtra("install", true);
-											startActivity(ver);
-										}
-
-										ctx.finish();
-									}
-								});
-							} catch (Exception e) {
-								showToast("Failed to install this version.");
-								e.printStackTrace();
-							}
-							return;
-						}
-
-						try {
-							new File(ServerUtils.getDataDirectory() + "/src/")
-									.renameTo(new File(ServerUtils
-											.getDataDirectory() + "/_src/"));
-						} catch (Exception e) {
-							//
-						}
-
-						try {
-
-							String zipFileName = ServerUtils.getDataDirectory()
-									+ "/versions/" + fver + ".zip";
-							ZipFile zip = new ZipFile(zipFileName);
-							iDialog.setMax(zip.size());
-							FileInputStream fin = new FileInputStream(
-									zipFileName);
-							ZipInputStream zin = new ZipInputStream(fin);
-							ZipEntry ze = null;
-							String loc = ServerUtils.getDataDirectory() + "/";
-							int per = 0;
-							while ((ze = zin.getNextEntry()) != null) {
-								per++;
-								if (!ze.isDirectory()) {
-									String zeName = ze.getName();
-									int firstSlash = zeName.indexOf("/");
-									if (firstSlash != -1) {
-										zeName = zeName
-												.substring(firstSlash + 1);
-									}
-
-									java.io.File f = new java.io.File(loc
-											+ zeName);
-									f = new java.io.File(f.getParent());
-									if (!f.isDirectory())
-										f.mkdirs();
-
-									FileOutputStream fout = new FileOutputStream(
-											loc + zeName);
-									byte[] buffer = new byte[1024 * 2 * 2];
-									int b = -1;
-									while ((b = zin.read(buffer)) != -1) {
-										fout.write(buffer, 0, b);
-									}
-									zin.closeEntry();
-									fout.close();
-								}
-								iDialog.setProgress(per);
-							}
-							zin.close();
-							zip.close();
-						} catch (Exception e) {
-							showToast("Failed to install this version.");
-							iDialog.dismiss();
-
-							try {
-								new File(ServerUtils.getDataDirectory()
-										+ "/_src/").renameTo(new File(
-										ServerUtils.getDataDirectory()
-												+ "/src/"));
-							} catch (Exception e2) {
-								//
-							}
-
-							return;
-						}
-
 						try {
 							delete(new File(ServerUtils.getDataDirectory()
-									+ "/_src/"));
-						} catch (Exception e2) {
-							//
+									+ "/src/"));
+						} catch (Exception e) {
+						}
+						try {
+							new File(ServerUtils.getDataDirectory()
+									+ "/PocketMine-MP.phar").delete();
+						} catch (Exception e) {
 						}
 
-						showToast("Installed this version.");
-						iDialog.dismiss();
-						runOnUiThread(new Runnable() {
+						try {
+							FileInputStream in = new FileInputStream(
+									ServerUtils.getDataDirectory()
+											+ "/versions/" + fver + ".phar");
 
-							@Override
-							public void run() {
-								if (install) {
-									Intent ver = new Intent(
-											VersionManagerActivity.this,
-											ConfigActivity.class);
-									ver.putExtra("install", true);
-									startActivity(ver);
-								}
-
-								ctx.finish();
+							FileOutputStream out = new FileOutputStream(
+									ServerUtils.getDataDirectory()
+											+ "/PocketMine-MP.phar");
+							byte[] buffer = new byte[1024];
+							int len;
+							while ((len = in.read(buffer)) > 0) {
+								out.write(buffer, 0, len);
 							}
-						});
+							in.close();
+							out.close();
+
+							runOnUiThread(new Runnable() {
+
+								@Override
+								public void run() {
+									if (install) {
+										Intent ver = new Intent(
+												VersionManagerActivity.this,
+												ConfigActivity.class);
+										ver.putExtra("install", true);
+										startActivity(ver);
+									}
+
+									ctx.finish();
+								}
+							});
+						} catch (Exception e) {
+							showToast("Failed to install this version.");
+							e.printStackTrace();
+						}
 					}
 				}).start();
 			}
