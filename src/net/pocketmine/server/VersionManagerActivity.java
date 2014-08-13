@@ -206,6 +206,12 @@ public class VersionManagerActivity extends SherlockActivity {
 	}
 
 	private void download(final String address, final String fver) {
+		File vdir = new File(ServerUtils.getDataDirectory()
+											+ "/versions/");
+		if(!vdir.exists()){
+			vdir.mkdirs();
+		}
+		
 		final VersionManagerActivity ctx = this;
 		runOnUiThread(new Runnable() {
 
