@@ -19,7 +19,7 @@ import android.util.Log;
 
 public final class ServerUtils {
 
-	final static String TAG = "com.MrARM.DroidPocketMine.ServerUtils";
+	final static String TAG = "net.pocketmine.server.ServerUtils";
 	static Context mContext;
 	private static java.io.OutputStream stdin;
 	private static java.io.InputStream stdout;
