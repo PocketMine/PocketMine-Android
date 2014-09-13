@@ -3,7 +3,6 @@ package net.pocketmine.server;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import net.pocketmine.server.R;
 
 import android.graphics.Color;
 import android.os.Build;
