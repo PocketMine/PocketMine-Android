@@ -4,25 +4,17 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 import net.pocketmine.server.R;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -36,7 +28,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +36,6 @@ import com.actionbarsherlock.app.SherlockActivity;
 public class VersionManagerActivity extends SherlockActivity {
 	public ArrayAdapter<CharSequence> adapter;
 	private Boolean install = false;
-	private String notDownloadedStr = " (Not downloaded)";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +63,14 @@ public class VersionManagerActivity extends SherlockActivity {
 		final ProgressBar pbar = (ProgressBar) findViewById(R.id.loadingBar);
 		final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
 		final Button skip = (Button) findViewById(R.id.skipBtn);
-
+		skip.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		
 		pbar.setVisibility(View.VISIBLE);
 		scrollView.setVisibility(View.GONE);
 		skip.setVisibility(View.GONE);
@@ -83,14 +80,26 @@ public class VersionManagerActivity extends SherlockActivity {
 			@Override
 			public void run() {
 				try {
+					JSONObject softObj = (JSONObject) JSONValue
+							.parse(getPageContext("http://pocketmine.net/api/?channel=soft"));
+					final String softVersion = (String) softObj
+							.get("version");
+					final String softAPI = (String) softObj
+							.get("api_version");
+					Long date = (Long) softObj.get("date");
+					Date d = new Date(date * 1000);
+					final String softDate = SimpleDateFormat
+							.getDateInstance().format(d);
+					final String softDownloadURL = (String) softObj.get("download_url");
+					
 					JSONObject stableObj = (JSONObject) JSONValue
 							.parse(getPageContext("http://pocketmine.net/api/?channel=stable"));
 					final String stableVersion = (String) stableObj
 							.get("version");
 					final String stableAPI = (String) stableObj
 							.get("api_version");
-					Long date = (Long) stableObj.get("date");
-					Date d = new Date(date * 1000);
+					date = (Long) stableObj.get("date");
+					d = new Date(date * 1000);
 					final String stableDate = SimpleDateFormat
 							.getDateInstance().format(d);
 					final String stableDownloadURL = (String) stableObj.get("download_url");
@@ -119,6 +128,9 @@ public class VersionManagerActivity extends SherlockActivity {
 
 						@Override
 						public void run() {
+							TextView softVersionView = (TextView) findViewById(R.id.soft_version);
+							TextView softDateView = (TextView) findViewById(R.id.soft_date);
+							Button softDownload = (Button) findViewById(R.id.download_soft);
 							TextView stableVersionView = (TextView) findViewById(R.id.stable_version);
 							TextView stableDateView = (TextView) findViewById(R.id.stable_date);
 							Button stableDownload = (Button) findViewById(R.id.download_stable);
@@ -129,6 +141,18 @@ public class VersionManagerActivity extends SherlockActivity {
 							TextView devDateView = (TextView) findViewById(R.id.dev_date);
 							Button devDownload = (Button) findViewById(R.id.download_dev);
 
+							softVersionView.setText("Version: "
+									+ softVersion + " (API: " + softAPI
+									+ ")");
+							softDateView.setText(softDate);
+							softDownload.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									download(softDownloadURL, softVersion);
+								}
+							});
+							
 							stableVersionView.setText("Version: "
 									+ stableVersion + " (API: " + stableAPI
 									+ ")");
@@ -260,6 +284,7 @@ public class VersionManagerActivity extends SherlockActivity {
 							output.close();
 							input.close();
 						} catch (Exception e) {
+							e.printStackTrace();
 							showToast("Failed to download this version.");
 							dlDialog.dismiss();
 							return;

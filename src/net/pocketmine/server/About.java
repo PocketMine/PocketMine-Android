@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.webkit.WebView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Window;
 import net.pocketmine.server.R;
 
 public class About extends SherlockActivity {

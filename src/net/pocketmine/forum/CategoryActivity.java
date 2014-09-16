@@ -3,18 +3,12 @@ package net.pocketmine.forum;
 import java.util.ArrayList;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 
-import net.pocketmine.forum.PluginsActivity.CategoriesFragment;
-import net.pocketmine.forum.PluginsActivity.ListFragment;
 import net.pocketmine.forum.PluginsActivity.Plugin;
-import net.pocketmine.forum.PluginsActivity.PluginsTabs;
-import net.pocketmine.forum.PluginsActivity.TestFragment;
-import net.pocketmine.server.HomeActivity;
 import net.pocketmine.server.R;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,12 +23,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class CategoryActivity extends SherlockFragmentActivity {
 

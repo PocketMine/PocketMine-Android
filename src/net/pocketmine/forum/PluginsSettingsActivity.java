@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
@@ -58,6 +57,8 @@ public class PluginsSettingsActivity extends SherlockPreferenceActivity {
 		if (!isSimplePreferences(this)) {
 			return;
 		}
+		
+		/*
 
 		// In the simplified UI, fragments are not used at all and we instead
 		// use the older PreferenceActivity APIs.
@@ -83,7 +84,7 @@ public class PluginsSettingsActivity extends SherlockPreferenceActivity {
 		bindPreferenceSummaryToValue(findPreference("example_text"));
 		bindPreferenceSummaryToValue(findPreference("example_list"));
 		bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-		bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+		bindPreferenceSummaryToValue(findPreference("sync_frequency"));*/
 	}
 
 	/** {@inheritDoc} */

@@ -2,17 +2,9 @@ package net.pocketmine.forum;
 
 import java.util.ArrayList;
 
-import net.pocketmine.forum.GridAdapter.DownloadImageTask;
-import net.pocketmine.server.R;
-
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class DynamicLayout extends LinearLayout {

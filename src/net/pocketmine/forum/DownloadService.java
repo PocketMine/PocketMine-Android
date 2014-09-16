@@ -169,7 +169,7 @@ public class DownloadService extends Service {
 					total += count;
 					int progress = (int) (total * 100 / fileLength);
 					if (progress != lastProgress) {
-						this.progress = progress;
+						DownloadService.progress = progress;
 						Log.d("DownloadService", "Progress: " + progress);
 						builder.setProgress(100, progress, false)
 								.setContentText(progress + "%");

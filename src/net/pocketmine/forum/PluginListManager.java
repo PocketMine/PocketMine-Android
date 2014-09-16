@@ -29,6 +29,7 @@ public class PluginListManager {
 		public ArrayList<String> files; // when extracting from zip
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void load() {
 		File f = new File(ServerUtils.getDataDirectory() + "/plugins/.plugins");
 		if (f.exists()) {

@@ -453,7 +453,7 @@ public class ConfigActivity extends SherlockActivity {
 			LinearLayout ll = new LinearLayout(this);
 			final EditText input = new EditText(this);
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-					LinearLayout.LayoutParams.FILL_PARENT,
+					LinearLayout.LayoutParams.MATCH_PARENT,
 					LinearLayout.LayoutParams.WRAP_CONTENT);
 			input.setInputType(InputType.TYPE_CLASS_NUMBER);
 			layoutParams.setMargins(HomeActivity.dip2px(8), 0,

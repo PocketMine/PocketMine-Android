@@ -17,14 +17,11 @@ import android.os.IBinder;
 import net.pocketmine.server.R;
 
 public class ServerService extends Service {
-	public static final String EXTRA_PORT = "EXTRA_PORT";
 	private boolean isRunning = false;
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		String port = intent.getStringExtra(EXTRA_PORT);
-
-		run(port);
+		run();
 
 		return (START_NOT_STICKY);
 	}
@@ -40,7 +37,7 @@ public class ServerService extends Service {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void run(String port) {
+	private void run() {
 		if (!isRunning) {
 
 			isRunning = true;

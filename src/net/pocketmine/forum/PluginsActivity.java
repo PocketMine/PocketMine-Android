@@ -641,7 +641,7 @@ public class PluginsActivity extends SherlockFragmentActivity {
 								R.layout.plugin_card2);
 
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-								LinearLayout.LayoutParams.FILL_PARENT,
+								LinearLayout.LayoutParams.MATCH_PARENT,
 								LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
 						view.setLayoutParams(params);
 

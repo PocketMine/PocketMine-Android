@@ -18,13 +18,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.RelativeLayout.LayoutParams;
 
 public class ReviewActivity extends SherlockActivity {
 
 	Boolean hasMore = false;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,7 +74,7 @@ public class ReviewActivity extends SherlockActivity {
 					hasMore = false;
 					final ProgressBar pb = new ProgressBar(ReviewActivity.this);
 					pb.setLayoutParams(new LinearLayout.LayoutParams(
-							LinearLayout.LayoutParams.FILL_PARENT,
+							LinearLayout.LayoutParams.MATCH_PARENT,
 							LinearLayout.LayoutParams.WRAP_CONTENT));
 					layout.addView(pb);
 					new Thread(new Runnable() {

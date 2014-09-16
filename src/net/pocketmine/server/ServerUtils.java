@@ -19,7 +19,7 @@ import android.util.Log;
 
 public final class ServerUtils {
 
-	final static String TAG = "net.pocketmine.server.ServerUtils";
+	final static String TAG = "com.MrARM.DroidPocketMine.ServerUtils";
 	static Context mContext;
 	private static java.io.OutputStream stdin;
 	private static java.io.InputStream stdout;
@@ -306,7 +306,7 @@ public final class ServerUtils {
 		// File mLighttpd = new File(getAppDirectory() + "/lighttpd");
 		// File mMySqlMon = new File(getAppDirectory() + "/mysql-monitor");
 
-		if (mPhp.exists() && (mPM.exists() || mPMPhar.exists()) && saveVer == 4) {
+		if (mPhp.exists() && (mPM.exists() || mPMPhar.exists()) && saveVer == 6) {
 
 			return true;
 

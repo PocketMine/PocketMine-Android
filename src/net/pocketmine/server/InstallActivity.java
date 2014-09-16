@@ -40,7 +40,7 @@ public class InstallActivity extends SherlockActivity {
 	public void contiuneInstall(){
 		if(HomeActivity.prefs!=null){
 			SharedPreferences.Editor spe = HomeActivity.prefs.edit();
-			spe.putInt("filesVersion", 4);
+			spe.putInt("filesVersion", 6);
 			spe.commit();
 		}
 		Intent ver = new Intent(this, VersionManagerActivity.class);

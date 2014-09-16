@@ -170,7 +170,7 @@ public class WhitelistActivity extends SherlockActivity {
 			LinearLayout ll = new LinearLayout(this);
 			final EditText input = new EditText(this);
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-					LinearLayout.LayoutParams.FILL_PARENT,
+					LinearLayout.LayoutParams.MATCH_PARENT,
 					LinearLayout.LayoutParams.WRAP_CONTENT);
 			layoutParams.setMargins(HomeActivity.dip2px(8), 0,
 					HomeActivity.dip2px(8), 0);
